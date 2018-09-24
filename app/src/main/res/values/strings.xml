@@ -1,0 +1,56 @@
+<resources>
+    <string name="app_name">Download</string>
+    <string name="app_db_path">sddman/dowload/db</string>
+    <string name="app_down_path">sddman/dowload/file</string>
+
+    <string name="title_dialog">提示</string>
+    <string name="setting">设置</string>
+    <string name="resume">继续</string>
+    <string name="cancel">取消</string>
+    <string name="back">返回</string>
+    <string name="open">打开</string>
+    <string name="play">播放</string>
+    <string name="download">下载</string>
+    <string name="downloading">下载中</string>
+    <string name="down_finish">已完成</string>
+    <string name="is_stop">已暂停</string>
+    <string name="wait_down">等待下载</string>
+
+    <string name="message_setting_comeback">前往设置界面.</string>
+    <string name="message_permission_rationale">请授权以下必要权限程序才能继续运行:\n\n%1$s</string>
+    <string name="message_permission_always_failed">请前往设置界面授予权限:\n\n%1$s</string>
+    <string name="down_count">下载:%1$s/%2$s</string>
+    <string name="down_speed">速度:%1$s</string>
+    <string name="down_speed_up">加速:%1$s</string>
+    <string name="remaining_time">剩余:%1$s</string>
+    <string name="play_time">%1$s/%2$s</string>
+
+    <string name="add_download">添加任务</string>
+    <string name="add_downloading">添加任务中....</string>
+    <string name="download_management">下载管理</string>
+    <string name="new_download">新建下载任务</string>
+    <string name="qr_download">扫描二维码下载</string>
+    <string name="url_download">下载链接(磁力链、thunder://、ftp://、http:// ed2k://)</string>
+    <string name="bt_download">选择BT种子</string>
+    <string name="bt_file_error">种子文件解析失败</string>
+    <string name="bt_file_info">种子文件信息</string>
+    <string name="not_diy_down_bt">目前只能下载种子所有文件，暂时还不支持指定文件下载</string>
+
+    <string name="url_download_hit">请输入或粘贴下载链接(支持：磁力链、thunder://、ftp://、http:// ed2k://)</string>
+    <string name="task_earlier_has">任务已经存在下载列表中</string>
+    <string name="task_earlier_success">任务已经存在完成列表中</string>
+    <string name="add_task_fail">添加任务失败，请重试！</string>
+    <string name="dele_success">删除成功</string>
+    <string name="dele_fail">删除失败</string>
+    <string name="determine_dele">确认删除</string>
+    <string name="dele_data_and_file">连同文件一起删除</string>
+    <string name="file_is_dele">本地文件已删除</string>
+
+    <string name="check_file">请选择文件</string>
+    <string name="check_count">已选择(%1$s/%2$s)</string>
+    <string name="check_all">全选</string>
+    <string name="cancel_check_all">取消全选</string>
+
+    <string name="test_url">thunder://QUFmdHA6Ly95Z2R5ODp5Z2R5OEB5ZzQ1LmR5ZHl0dC5uZXQ6ODExNi9bJUU5JTk4JUIzJUU1JTg1JTg5JUU3JTk0JUI1JUU1JUJEJUIxd3d3LnlnZHk4Lm5ldF0lRTUlQUYlQkIlRTUlQTQlQTIlRTclOTIlQjAlRTYlQjglQjglRTglQUUlQjAuSEQuNzIwcC4lRTUlOUIlQkQlRTglOEIlQjElRTUlOEYlOEMlRTglQUYlQUQlRTQlQjglQUQlRTUlQUQlOTcubWt2Wlo=</string>
+
+</resources>
