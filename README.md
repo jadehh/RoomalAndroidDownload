@@ -9,8 +9,7 @@
 ### v1.0
 下载地址:http://qn.sddman.cn/apk/download2.apk<br>
 # AndroidDownload
-当前开源版本1.0
-
+当前开源版本V1.0
 ## 主要技术：
 下载服务使用oceanzhang01的一个开源项目<br> 
 git地址：https://github.com/oceanzhang01/MiniThunder (不知道为什么作者把MiniThunder这个项目删掉了)<br> 
