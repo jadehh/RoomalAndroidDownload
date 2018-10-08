@@ -1,4 +1,8 @@
 # 更新日志
+### v1.3
+下载地址:http://qn.sddman.cn/apk/download-v1.3.apk<br>
+1、优化APP耗资源导致手机卡顿问题。<br>
+2、修复种子文件下载成功后提示“本地文件已删除”的bug。<br>
 ### v1.1
 下载地址:http://qn.sddman.cn/apk/download-v1.1.apk<br>
 1、新增种子搜索功能<br>
