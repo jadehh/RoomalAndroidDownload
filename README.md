@@ -1,4 +1,5 @@
-种子搜索已经单独提取出来开源了，开源地址:https://github.com/roomanl/AndroidMagnetSearch
+种子搜索已经单独提取出来开源了，开源地址:https://github.com/roomanl/AndroidMagnetSearch<br/>
+另外，似乎下载服务已经不能用了。
 # 更新日志
 ### v1.3
 下载地址:http://qn.sddman.cn/apk/download-v1.3.apk<br>
