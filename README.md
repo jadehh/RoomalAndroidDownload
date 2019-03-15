@@ -34,5 +34,5 @@ git地址：https://github.com/oceanzhang01/MiniThunder (不知道为什么作�
 ## 捐赠：
 微信<br> 
 ![](https://github.com/roomanl/AndroidDownload/blob/master/screen/wx.png?raw=true)
-支付宝<br> 
+<br>支付宝<br> 
 ![](https://github.com/roomanl/AndroidDownload/blob/master/screen/zfb.png?raw=true)
