@@ -13,13 +13,17 @@ import android.widget.TextView;
 
 import com.coorchice.library.SuperTextView;
 
+import org.xutils.x;
+
 import java.io.File;
 import java.util.List;
 
 import cn.sddman.download.R;
+import cn.sddman.download.common.Const;
 import cn.sddman.download.mvp.e.DownloadTaskEntity;
 import cn.sddman.download.mvp.v.DownLoadSuccessView;
 import cn.sddman.download.util.FileTools;
+import cn.sddman.download.util.Util;
 
 public class DownloadSuccessListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private List<DownloadTaskEntity> list;
@@ -68,32 +72,37 @@ public class DownloadSuccessListAdapter extends RecyclerView.Adapter<RecyclerVie
         }
         public void bind(DownloadTaskEntity task){
             this.task=task;
+            String filePath=task.getLocalPath()+ File.separator+task.getmFileName();
             fileNameText.setText(task.getmFileName());
-            fileIcon.setImageDrawable(itemView.getResources().getDrawable(FileTools.getFileIcon(task.getmFileName())));
-            if(task.getThumbnail()==null){
-                Bitmap bitmap=FileTools.getVideoThumbnail(task.getLocalPath()+File.separator+task.getmFileName(),250,150, MediaStore.Video.Thumbnails.FULL_SCREEN_KIND);
-                if(bitmap!=null){
-                    fileIcon.setImageBitmap(bitmap);
-                }
+
+            if(task.getThumbnailPath()!=null && FileTools.isVideoFile(filePath)){
+                x.image().bind(fileIcon,task.getThumbnailPath());
+            }else{
+                String filename=task.getFile()?task.getmFileName():"";
+                fileIcon.setImageDrawable(itemView.getResources().getDrawable(FileTools.getFileIcon(filename)));
             }
             downSize.setText(FileTools.convertFileSize(task.getmDownloadSize()));
-            if(FileTools.exists(task.getLocalPath()+ File.separator+task.getmFileName())){
+            if(FileTools.exists(filePath)){
                 fileIsDele.setVisibility(View.GONE);
                 btnOpen.setVisibility(View.VISIBLE);
                 fileNameText.setTextColor(itemView.getResources().getColor(R.color.dimgray));
                 downSize.setTextColor(itemView.getResources().getColor(R.color.gray_8f));
+                String suffix = Util.getFileSuffix(task.getmFileName());
                 if(FileTools.isVideoFile(task.getmFileName())){
                     btnOpen.setText(itemView.getResources().getString(R.string.play));
-                }else{
+                }else if("TORRENT".equals(suffix) || "APK".equals(suffix) || (!task.getFile() && task.getTaskType()== Const.BT_DOWNLOAD)){
                     btnOpen.setText(itemView.getResources().getString(R.string.open));
+                }else{
                     btnOpen.setVisibility(View.INVISIBLE);
                 }
-            }else{
+            }else if(task.getFile() && !FileTools.exists(filePath)){
                 fileIsDele.setVisibility(View.VISIBLE);
                 fileNameText.setTextColor(itemView.getResources().getColor(R.color.gray_cc));
                 downSize.setTextColor(itemView.getResources().getColor(R.color.gray_cc));
-                //btnOpen.setText("重新下载");
-                btnOpen.setVisibility(View.INVISIBLE);
+                btnOpen.setText("重新下载");
+                btnOpen.setVisibility(View.VISIBLE);
+            }else if(!task.getFile()){
+                btnOpen.setVisibility(View.VISIBLE);
             }
 
         }

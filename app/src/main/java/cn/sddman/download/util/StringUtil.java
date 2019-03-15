@@ -3,6 +3,10 @@ package cn.sddman.download.util;
 import java.text.DecimalFormat;
 
 public class StringUtil {
+    public static boolean isEmpty(CharSequence str) {
+        return (str == null || str.length() == 0);
+    }
+
 
     public static double stringToDouble(String a) {
         double b = Double.valueOf(a);

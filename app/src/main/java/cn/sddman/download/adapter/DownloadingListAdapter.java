@@ -1,6 +1,8 @@
 package cn.sddman.download.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import com.coorchice.library.SuperTextView;
 import com.daimajia.numberprogressbar.NumberProgressBar;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -28,6 +31,7 @@ public class DownloadingListAdapter  extends RecyclerView.Adapter<RecyclerView.V
     private List<DownloadTaskEntity> list;
     private Context context;
     private DownLoadIngView downLoadIngView;
+    private  Bitmap bitmap=null;
     public DownloadingListAdapter(Context context,DownLoadIngView downLoadIngView, List<DownloadTaskEntity> list){
         this.context=context;
         this.downLoadIngView=downLoadIngView;
@@ -78,7 +82,11 @@ public class DownloadingListAdapter  extends RecyclerView.Adapter<RecyclerView.V
         public void bind(DownloadTaskEntity task){
             this.task=task;
             fileNameText.setText(task.getmFileName());
-            fileIcon.setImageDrawable(itemView.getResources().getDrawable(FileTools.getFileIcon(task.getmFileName())));
+            if(task.getFile()) {
+                fileIcon.setImageDrawable(itemView.getResources().getDrawable(FileTools.getFileIcon(task.getmFileName())));
+            }else{
+                fileIcon.setImageDrawable(itemView.getResources().getDrawable(R.drawable.ic_floder));
+            }
 //            if(task.getThumbnail()!=null){
 //                fileIcon.setImageBitmap(task.getThumbnail());
 //            }
@@ -91,14 +99,26 @@ public class DownloadingListAdapter  extends RecyclerView.Adapter<RecyclerView.V
             if(task.getmFileSize()!=0 && task.getmDownloadSize()!=0) {
                 long speed=task.getmDownloadSpeed()==0?1:task.getmDownloadSpeed();
                 long time = (task.getmFileSize() - task.getmDownloadSize()) / speed;
-                RemainingTime.setText(String.format(itemView.getResources().getString(R.string.remaining_time), TimeUtil.secToTime((int) time)));
+                RemainingTime.setText(String.format(itemView.getResources().getString(R.string.remaining_time), TimeUtil.formatFromSecond((int) time)));
             }
-            fileIcon2.setVisibility(View.GONE);
+            if(task.getThumbnailPath()!=null){
+                fileIcon2.setVisibility(View.VISIBLE);
+            }else{
+                fileIcon2.setVisibility(View.GONE);
+            }
+
+//            String videoPath=task.getLocalPath()+ File.separator+task.getmFileName();
+//            bitmap = FileTools.getVideoThumbnail(videoPath, 200, 200, MediaStore.Video.Thumbnails.MICRO_KIND);
+//           if (bitmap != null) {
+//                task.setThumbnail(bitmap);
+//               fileIcon2.setVisibility(View.VISIBLE);
+//            }
+
             if(task.getmDownloadSize()!=0 && task.getmFileSize()!=0) {
                 double f1 = new BigDecimal((float) task.getmDownloadSize() / task.getmFileSize()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
                 progressBar.setProgress((int) (f1 * 100));
-                if(FileTools.isVideoFile(task.getmFileName()) && (f1 * 100)>10){
-                   // fileIcon2.setVisibility(View.VISIBLE);
+                if(FileTools.isVideoFile(task.getmFileName()) && (f1 * 100)>1){
+                    //fileIcon2.setVisibility(View.VISIBLE);
                 }
 
             }else{
@@ -127,6 +147,7 @@ public class DownloadingListAdapter  extends RecyclerView.Adapter<RecyclerView.V
             startTask.setOnClickListener(listener);
             deleTask.setOnClickListener(listener);
             fileIcon2.setOnClickListener(listener);
+            fileIcon.setOnClickListener(listener);
         }
 
         private View.OnClickListener listener=new View.OnClickListener() {
@@ -149,7 +170,11 @@ public class DownloadingListAdapter  extends RecyclerView.Adapter<RecyclerView.V
                         downLoadIngView.deleTask(task);
                         break;
                     case R.id.file_icon2:
-                        //downLoadIngView.openFile(task);
+                        downLoadIngView.openFile(task);
+                        break;
+                    case R.id.file_icon:
+                        if(!task.getFile())
+                            downLoadIngView.openFile(task);
                         break;
                 }
             }

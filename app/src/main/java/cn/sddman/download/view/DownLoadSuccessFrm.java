@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.yanzhenjie.permission.AndPermission;
 import com.yarolegovich.lovelydialog.LovelyChoiceDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -87,14 +88,31 @@ public class DownLoadSuccessFrm extends Fragment implements DownLoadSuccessView 
 
     @Override
     public void openFile(DownloadTaskEntity task) {
-        String suffix = task.getmFileName().substring(task.getmFileName().lastIndexOf(".") + 1).toUpperCase();
-        if("TORRENT".equals(suffix)) {
+        String suffix = Util.getFileSuffix(task.getmFileName());
+        String filePath=task.getLocalPath()+ File.separator+task.getmFileName();
+        if(task.getFile() && !FileTools.exists(filePath)) {
+            task.setThumbnailPath(null);
+            EventBus.getDefault().postSticky(new MessageEvent(new Msg(Const.MESSAGE_TYPE_RES_TASK, task)));
+            refreshData();
+        }else if("TORRENT".equals(suffix)) {
             Intent intent = new Intent(getActivity(), TorrentInfoActivity.class);
-            intent.putExtra("torrentPath", task.getLocalPath()+ File.separator+task.getmFileName());
+            intent.putExtra("torrentPath", filePath);
+            intent.putExtra("isDown", true);
             startActivity(intent);
+        }else if("APK".equals(suffix)){
+            File file=new File(filePath);
+            AndPermission.with(this)
+                    .install()
+                    .file(file)
+                    .start();
         }else if(FileTools.isVideoFile(task.getmFileName())) {
             Intent intent = new Intent(getActivity(), PlayerActivity.class);
-            intent.putExtra("videoPath", task.getLocalPath()+File.separator+task.getmFileName());
+            intent.putExtra("videoPath", filePath);
+            startActivity(intent);
+        }else if(!task.getFile() && task.getTaskType()==Const.BT_DOWNLOAD){
+            Intent intent = new Intent(getActivity(), TorrentInfoActivity.class);
+            intent.putExtra("torrentPath", task.getUrl());
+            intent.putExtra("isDown", false);
             startActivity(intent);
         }
     }

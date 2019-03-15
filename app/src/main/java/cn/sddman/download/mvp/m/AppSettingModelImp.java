@@ -91,4 +91,24 @@ public class AppSettingModelImp implements AppSettingModel {
         setting.setValue(net);
         saveOrUploadSteeing(setting);
     }
+    @Override
+    public AppSettingEntity getDownNotify() {
+        try {
+            return DBTools.getInstance().db().selector(AppSettingEntity.class).where("key","=", Const.DOWN_NOTIFY_KEY).findFirst();
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public void setDownNotify(String notify) {
+        AppSettingEntity setting= getDownNotify();
+        if(null==setting){
+            setting=new AppSettingEntity();
+            setting.setKey(Const.DOWN_NOTIFY_KEY);
+        }
+        setting.setValue(notify);
+        saveOrUploadSteeing(setting);
+    }
 }

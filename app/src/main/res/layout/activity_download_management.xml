@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -18,6 +19,15 @@
             app:state_drawable_height="25dp"
             app:state_drawable_width="25dp"
             app:state_drawable="@drawable/ic_plus2" />
+        <com.coorchice.library.SuperTextView
+            android:id="@+id/open_magnet_search"
+            android:layout_width="@dimen/top_bar_height"
+            android:layout_height="@dimen/top_bar_height"
+            android:gravity="center"
+            app:isShowState="true"
+            app:state_drawable_height="25dp"
+            app:state_drawable_width="25dp"
+            app:state_drawable="@drawable/ic_search" />
         <com.coorchice.library.SuperTextView
             android:id="@+id/open_setting"
             android:layout_width="@dimen/top_bar_height"

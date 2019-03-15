@@ -11,6 +11,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:textSize">@dimen/top_nav_text_size</item>
+        <item name="android:windowBackground">@drawable/bg</item>
     </style>
     <style name="Theme.AppStartLoadTranslucent" parent="AppTheme">
         <item name="windowActionBar">false</item>

@@ -1,15 +1,17 @@
 package cn.sddman.download.mvp.e;
 
-import com.xunlei.downloadlib.parameter.TorrentFileInfo;
+import android.graphics.Bitmap;
 
 public class TorrentInfoEntity {
     private int mFileIndex;
     private String mFileName;
     private long mFileSize;
     private int mRealIndex;
+    private String path;
     private String mSubPath;
     private String playUrl;
     private String hash;
+    private Bitmap thumbnail;
     private Boolean isCheck=false;
 
     public int getmFileIndex() {
@@ -74,5 +76,21 @@ public class TorrentInfoEntity {
 
     public void setCheck(Boolean check) {
         isCheck = check;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public Bitmap getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(Bitmap thumbnail) {
+        this.thumbnail = thumbnail;
     }
 }

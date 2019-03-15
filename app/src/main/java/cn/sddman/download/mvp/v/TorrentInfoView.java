@@ -9,4 +9,6 @@ public interface TorrentInfoView {
     void itemClick(int index);
     void startTaskSuccess();
     void startTaskFail(String msg);
+    boolean getIsDown();
+    void playerViedo(TorrentInfoEntity te);
 }

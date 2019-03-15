@@ -12,7 +12,6 @@ import com.cocosw.bottomsheet.BottomSheet;
 import com.coorchice.library.SuperTextView;
 import com.ess.filepicker.FilePicker;
 import com.ess.filepicker.model.EssFile;
-import com.xunlei.downloadlib.android.XLUtil;
 import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 import com.yzq.zxinglibrary.android.CaptureActivity;
 import com.yzq.zxinglibrary.common.Constant;
@@ -31,9 +30,11 @@ import cn.sddman.download.R;
 import cn.sddman.download.common.BaseActivity;
 import cn.sddman.download.common.Const;
 import cn.sddman.download.common.CusAdapter;
-import cn.sddman.download.common.MessageEvent;
 import cn.sddman.download.common.Msg;
-import cn.sddman.download.util.SystemConfig;
+import cn.sddman.download.mvp.p.AppConfigPresenter;
+import cn.sddman.download.mvp.p.AppConfigPresenterImp;
+import cn.sddman.download.service.DownService;
+import cn.sddman.download.util.AppConfigUtil;
 import cn.sddman.download.view.DownLoadIngFrm;
 import cn.sddman.download.view.DownLoadSuccessFrm;
 import cn.sddman.download.mvp.p.DownloadManagementPresenter;
@@ -58,13 +59,16 @@ public class DownloadManagementActivity extends BaseActivity implements Download
     private static final int REQUEST_CODE_SCAN = 10010;
 
     private DownloadManagementPresenter downloadManagementPresenter;
+    private AppConfigPresenter appConfigPresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent intent = new Intent(this, DownService.class);
+        startService(intent);
         downloadManagementPresenter=new DownloadManagementPresenterImp(this);
+        appConfigPresenter=new AppConfigPresenterImp();
         initViewPage();
         initBottomMenu();
-        int i= SystemConfig.getNetType();
 
     }
 
@@ -114,6 +118,11 @@ public class DownloadManagementActivity extends BaseActivity implements Download
         intent =new Intent(DownloadManagementActivity.this,AppSettingActivity.class);
         startActivity(intent);
     }
+    @Event(value = R.id.open_magnet_search)
+    private void magnetSearchClick(View view) {
+        intent =new Intent(DownloadManagementActivity.this,MagnetSearchActivity.class);
+        startActivity(intent);
+    }
     private void initBottomMenu(){
         bottomSheet=new BottomSheet.Builder(this)
                 .title(R.string.new_download)
@@ -157,6 +166,7 @@ public class DownloadManagementActivity extends BaseActivity implements Download
             if("TORRENT".equals(suffix)) {
                 Intent intent = new Intent(this, TorrentInfoActivity.class);
                 intent.putExtra("torrentPath", fileList.get(0).getAbsolutePath());
+				intent.putExtra("isDown", true);
                 startActivity(intent);
             }else{
                 Util.alert(DownloadManagementActivity.this,"选择的文件不是种子文件", Const.ERROR_ALERT);
@@ -179,27 +189,14 @@ public class DownloadManagementActivity extends BaseActivity implements Download
                     .show();
         }
     }
-    @Subscribe(threadMode = ThreadMode.MAIN,sticky=true)
-    public void onMessageEvent(MessageEvent event) {
-        Msg msg=event.getMessage();
-        if(msg.getType()== Const.MESSAGE_TYPE_SWITCH_TAB){
-            int index=(int)msg.getObj();
-            viewPager.setCurrentItem(index);
-        }
-    }
 
     @Override
     public void onStart() {
         super.onStart();
-        if(!EventBus.getDefault().isRegistered(this)){
-            EventBus.getDefault().register(this);
-        }
     }
 
     @Override
     public void onDestroy() {
-        if (EventBus.getDefault().isRegistered(this))
-            EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
 
@@ -213,5 +210,23 @@ public class DownloadManagementActivity extends BaseActivity implements Download
     @Override
     public void addTaskFail(String msg) {
         Util.alert(this,msg, Const.ERROR_ALERT);
+    }
+
+    @Override
+    public void updataApp(String version, final String url,String content) {
+        new LovelyStandardDialog(this, LovelyStandardDialog.ButtonLayout.VERTICAL)
+                .setTopColorRes(R.color.colorMain)
+                .setIcon(R.drawable.ic_success)
+                .setButtonsColorRes(R.color.colorMain)
+                .setTitle("App有更新")
+                .setMessage("当前版本："+ AppConfigUtil.getLocalVersionName()+"，最新版本："+version+
+                "\n"+content)
+                .setPositiveButton("确定下载更新", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        downloadManagementPresenter.startTask(url);
+                    }
+                })
+                .show();
     }
 }

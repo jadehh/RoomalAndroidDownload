@@ -50,7 +50,13 @@ public class AppSettingUtil {
         }
         return setting.getValue().equals(Const.MOBILE_NET_OK+"")?true:false;
     }
-
+    public Boolean isShowDownNotify(){
+        AppSettingEntity setting=model.getDownNotify();
+        if(null==setting){
+            return false;
+        }
+        return setting.getValue().equals(Const.MOBILE_NET_OK+"")?true:false;
+    }
     public Boolean isDown(){
         int netType=SystemConfig.getNetType();
         if(netType==Const.NET_TYPE_UNKNOW){

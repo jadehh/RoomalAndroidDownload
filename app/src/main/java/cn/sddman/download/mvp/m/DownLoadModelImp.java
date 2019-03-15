@@ -25,9 +25,17 @@ import cn.sddman.download.util.FileTools;
 import cn.sddman.download.util.Util;
 
 public class DownLoadModelImp implements DownLoadModel {
+    public DownLoadModelImp(){
+
+    }
     @Override
     public Boolean startTorrentTask(DownloadTaskEntity bt) {
-        String path=bt.getLocalPath()+ File.separator+bt.getmFileName();
+        String path=bt.getUrl();
+        try {
+            DBTools.getInstance().db().delete(bt);
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
         return startTorrentTask(path,null);
     }
 
@@ -134,6 +142,8 @@ public class DownLoadModelImp implements DownLoadModel {
             task.setTaskId(taskId);
             task.setmTaskStatus(taskInfo.mTaskStatus);
             DBTools.getInstance().db().saveOrUpdate(task);
+            if(taskInfo.mTaskId==0)
+                return false;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -200,6 +210,9 @@ public class DownLoadModelImp implements DownLoadModel {
             tie.setmFileSize(torrent.mFileSize);
             tie.setmSubPath(torrent.mSubPath);
             tie.setmRealIndex(torrent.mRealIndex);
+            tie.setPath(AppSettingUtil.getInstance().getFileSavePath()+
+                    File.separator+torrentInfo.mMultiFileBaseFolder+
+                    File.separator+torrent.mSubPath+File.separator+torrent.mFileName);
             list.add(tie);
         }
         return list;

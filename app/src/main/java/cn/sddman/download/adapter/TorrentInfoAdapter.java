@@ -59,7 +59,7 @@ public class TorrentInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         private TorrentInfoEntity task;
         private TextView fileNameText;
         private ImageView fileIcon,fileCheckBox;
-        private SuperTextView fileType,fileSize;
+        private SuperTextView fileType,fileSize,filePlayer;
 
         public TaskHolder(View itemView) {
             super(itemView);
@@ -68,19 +68,41 @@ public class TorrentInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             fileCheckBox = (ImageView) itemView.findViewById(R.id.file_check_box);
             fileSize = (SuperTextView)itemView.findViewById(R.id.file_size);
             fileType = (SuperTextView)itemView.findViewById(R.id.file_type);
+            filePlayer = (SuperTextView)itemView.findViewById(R.id.file_play);
         }
-        public void bind(TorrentInfoEntity task){
+        public void bind(final TorrentInfoEntity task){
             this.task=task;
             String suffix = task.getmFileName().substring(task.getmFileName().lastIndexOf(".") + 1);
             fileNameText.setText(task.getmFileName());
-            fileIcon.setImageDrawable(itemView.getResources().getDrawable(FileTools.getFileIcon(task.getmFileName())));
+
             fileSize.setText(FileTools.convertFileSize(task.getmFileSize()));
             fileType.setText(suffix);
-            if(task.getCheck()){
-                fileCheckBox.setImageDrawable(itemView.getResources().getDrawable(R.drawable.ic_check));
+            if(torrentInfoView.getIsDown()){
+                fileIcon.setImageDrawable(itemView.getResources().getDrawable(FileTools.getFileIcon(task.getmFileName())));
+                if(task.getCheck()){
+                    fileCheckBox.setImageDrawable(itemView.getResources().getDrawable(R.drawable.ic_check));
+                }else{
+                    fileCheckBox.setImageDrawable(itemView.getResources().getDrawable(R.drawable.ic_uncheck));
+                }
             }else{
-                fileCheckBox.setImageDrawable(itemView.getResources().getDrawable(R.drawable.ic_uncheck));
+                fileCheckBox.setVisibility(View.GONE);
+                fileIcon.setImageDrawable(itemView.getResources().getDrawable(FileTools.getFileIcon(task.getmFileName())));
+                if(FileTools.isVideoFile(task.getmFileName())){
+                    if(task.getThumbnail()!=null){
+                        fileIcon.setImageBitmap(task.getThumbnail());
+                        filePlayer.setVisibility(View.VISIBLE);
+                        itemView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                torrentInfoView.playerViedo(task);
+                            }
+                        });
+                    }else{
+                        filePlayer.setVisibility(View.GONE);
+                    }
+                }
             }
+
 
         }
 

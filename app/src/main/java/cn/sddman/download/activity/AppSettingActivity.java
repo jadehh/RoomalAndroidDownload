@@ -31,6 +31,8 @@ public class AppSettingActivity extends BaseActivity implements AppSettingView {
     private TextView downCountText;
     @ViewInject(R.id.mobile_net)
     private Switch mobileNetSwitch;
+    @ViewInject(R.id.down_notify)
+    private Switch downNotifySwitch;
 
     private AppSettingPresenter appSettingPresenter;
     final private static int REQUEST_CODE_CHOOSE=10086;
@@ -49,6 +51,13 @@ public class AppSettingActivity extends BaseActivity implements AppSettingView {
                 appSettingPresenter.setMobileNet(net+"");
             }
         });
+        downNotifySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                int net=b?Const.MOBILE_NET_OK:Const.MOBILE_NET_NOT;
+                appSettingPresenter.setDownNotify(net+"");
+            }
+        });
     }
     @Override
     public void initSetting(String key, String value) {
@@ -59,6 +68,9 @@ public class AppSettingActivity extends BaseActivity implements AppSettingView {
         }else if(Const.MOBILE_NET_KEY.equals(key)){
             Boolean check=value.equals(Const.MOBILE_NET_OK+"")?true:false;
             mobileNetSwitch.setChecked(check);
+        }else if(Const.DOWN_NOTIFY_KEY.equals(key)){
+            Boolean check=value.equals(Const.MOBILE_NET_OK+"")?true:false;
+            downNotifySwitch.setChecked(check);
         }
     }
 

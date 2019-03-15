@@ -1,7 +1,10 @@
 <resources>
-    <string name="app_name">Download</string>
+    <string name="app_name">SD下载器</string>
     <string name="app_db_path">sddman/dowload/db</string>
     <string name="app_down_path">sddman/dowload/file</string>
+    <string name="app_crash_path">sddman/dowload/crash</string>
+    <string name="app_video_thumbnail_path">sddman/dowload/.pic</string>
+    <string name="xl_package_name">com.xunlei.downloadprovider</string>
 
     <string name="title_dialog">提示</string>
     <string name="setting">设置</string>
@@ -15,6 +18,9 @@
     <string name="down_finish">已完成</string>
     <string name="is_stop">已暂停</string>
     <string name="wait_down">等待下载</string>
+    <string name="bt_search">种子搜索</string>
+    <string name="date">时间</string>
+    <string name="hot">热度</string>
 
     <string name="message_setting_comeback">前往设置界面.</string>
     <string name="message_permission_rationale">请授权以下必要权限程序才能继续运行:\n\n%1$s</string>
@@ -24,11 +30,17 @@
     <string name="down_speed_up">加速:%1$s</string>
     <string name="remaining_time">剩余:%1$s</string>
     <string name="play_time">%1$s/%2$s</string>
+    <string name="magnet_date">日期:%1$s</string>
+    <string name="magnet_size">大小:%1$s</string>
+    <string name="magnet_hot">热度:%1$s</string>
+    <string name="search_source">搜索来源：%1$s</string>
+    <string name="search_sort">结果排序：%1$s</string>
 
     <string name="add_download">添加任务</string>
     <string name="add_downloading">添加任务中....</string>
     <string name="download_management">下载管理</string>
     <string name="new_download">新建下载任务</string>
+    <string name="slest_option">选择操作</string>
     <string name="qr_download">扫描二维码下载</string>
     <string name="url_download">下载链接(磁力链、thunder://、ftp://、http:// ed2k://)</string>
     <string name="bt_download">选择BT种子</string>
@@ -40,6 +52,7 @@
     <string name="task_earlier_has">任务已经存在下载列表中</string>
     <string name="task_earlier_success">任务已经存在完成列表中</string>
     <string name="add_task_fail">添加任务失败，请重试！</string>
+    <string name="add_task_success">任务添加成功！</string>
     <string name="dele_success">删除成功</string>
     <string name="dele_fail">删除失败</string>
     <string name="determine_dele">确认删除</string>

@@ -37,6 +37,8 @@ public class DownloadTaskEntity {
     private Boolean isFile;
     @Column(name = "createDate")
     private Date createDate;
+    @Column(name = "thumbnailPath")
+    private String thumbnailPath;
     private Bitmap thumbnail;
 
     public int getId() {
@@ -157,5 +159,13 @@ public class DownloadTaskEntity {
 
     public void setThumbnail(Bitmap thumbnail) {
         this.thumbnail = thumbnail;
+    }
+
+    public String getThumbnailPath() {
+        return thumbnailPath;
+    }
+
+    public void setThumbnailPath(String thumbnailPath) {
+        this.thumbnailPath = thumbnailPath;
     }
 }

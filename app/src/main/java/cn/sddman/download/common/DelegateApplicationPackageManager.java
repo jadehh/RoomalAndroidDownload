@@ -134,7 +134,7 @@ public class DelegateApplicationPackageManager extends PackageManager {
             throws NameNotFoundException {
         Log.w(TAG, "getApplicationInfo() ");
         if("com.xunlei.downloadprovider".equals(packageName)) {
-            packageName = "com.xunlei.downloadprovider";//realPackageName;
+            packageName = realPackageName;
         }
         ApplicationInfo applicationInfo;
         try {

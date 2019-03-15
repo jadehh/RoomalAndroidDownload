@@ -22,6 +22,8 @@ import java.util.List;
 
 import cn.sddman.download.R;
 import cn.sddman.download.common.RuntimeRationale;
+import cn.sddman.download.mvp.p.AppConfigPresenter;
+import cn.sddman.download.mvp.p.AppConfigPresenterImp;
 
 public class WelcomeActivity extends AppCompatActivity {
 
@@ -38,6 +40,8 @@ public class WelcomeActivity extends AppCompatActivity {
 
     }
     private void goHome(){
+        AppConfigPresenter appConfigPresenter=new AppConfigPresenterImp();
+        appConfigPresenter.getMagnetWebRule();
         Intent intent =new Intent(WelcomeActivity.this,DownloadManagementActivity.class);
         startActivity(intent);
         finish();

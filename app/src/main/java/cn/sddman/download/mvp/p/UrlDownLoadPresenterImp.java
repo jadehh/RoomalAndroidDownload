@@ -30,7 +30,8 @@ public class UrlDownLoadPresenterImp implements UrlDownLoadPresenter {
             if(task.getmTaskStatus()== Const.DOWNLOAD_CONNECTION
                     || task.getmTaskStatus()== Const.DOWNLOAD_LOADING
                     || task.getmTaskStatus()== Const.DOWNLOAD_FAIL
-                    || task.getmTaskStatus()== Const.DOWNLOAD_STOP){
+                    || task.getmTaskStatus()== Const.DOWNLOAD_STOP
+                    || task.getmTaskStatus()== Const.DOWNLOAD_WAIT){
                 urlDownLoadView.addTaskFail(x.app().getString(R.string.task_earlier_has));
             }else if(task.getmTaskStatus()== Const.DOWNLOAD_SUCCESS){
                 urlDownLoadView.addTaskFail(x.app().getString(R.string.task_earlier_success));

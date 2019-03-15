@@ -13,5 +13,7 @@ public interface AppSettingModel {
     AppSettingEntity getDownCount();
     AppSettingEntity getMobileNet();
     void setMobileNet(String net);
+    AppSettingEntity getDownNotify();
+    void setDownNotify(String notify);
 
 }

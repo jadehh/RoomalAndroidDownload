@@ -2,9 +2,12 @@ package cn.sddman.download.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
 import android.media.ThumbnailUtils;
 import android.os.Environment;
 import android.text.TextUtils;
+
+import org.xutils.x;
 
 import java.io.Closeable;
 import java.io.File;
@@ -14,6 +17,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import cn.sddman.download.R;
+import cn.sddman.download.common.Const;
 
 public class FileTools {
     private static final String TAG = "FileTools";
@@ -567,16 +571,57 @@ public class FileTools {
         }
         return bitmap;
     }
+    //根据路径得到视频缩略图
+    public static Bitmap getVideoThumbnail(String videoPath) {
+        if(!new File(videoPath).exists()) return null;
+        MediaMetadataRetriever media=new MediaMetadataRetriever();
+        media.setDataSource(videoPath);
+        Bitmap bitmap = media.getFrameAtTime();
+        return bitmap;
+    }
+    //获取视频总时长
+    public static int getVideoDuration(String path){
+        MediaMetadataRetriever media=new MediaMetadataRetriever();
+        media.setDataSource(path);
+        String duration = media.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION); //
+        return Integer.parseInt(duration);
+    }
+
     public static String getFileName(String path){
         return path.substring(path.lastIndexOf("/") + 1);
     }
     public static boolean isVideoFile(String fileName) {
+        if(null==fileName) return false;
         int pos = fileName.lastIndexOf('.');
         String extensionName = (pos >= 0) ? fileName.substring(pos + 1) : null;
         return (null != extensionName && VideoFileHelper.isSupportedVideoFileExtension(extensionName));
     }
 
+    public static String saveBitmap(Bitmap bm,String picName) {
+
+
+        try {
+            File file=new File(Const.VIDEO_PIC_PATH);
+            if(!file.exists()) file.mkdirs();
+            File f = new File(Const.VIDEO_PIC_PATH, picName);
+            if (!f.exists()) {
+                f.createNewFile();
+            }
+            FileOutputStream out = new FileOutputStream(f);
+            bm.compress(Bitmap.CompressFormat.PNG, 90, out);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return Const.VIDEO_PIC_PATH+File.separator+ picName;
+    }
+
     public static int getFileIcon(String fileName){
+        if(null==fileName){
+            return R.drawable.ic_unknow;
+        }
         String suffix = fileName.substring(fileName.lastIndexOf(".") + 1).toUpperCase();
         if(fileName.indexOf(".")<0) {
             return R.drawable.ic_floder;

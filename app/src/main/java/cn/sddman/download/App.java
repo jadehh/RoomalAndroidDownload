@@ -16,7 +16,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         x.Ext.init(this);
-        x.Ext.setDebug(BuildConfig.DEBUG);
+        //x.Ext.setDebug(BuildConfig.DEBUG);
         XLTaskHelper.init(getApplicationContext());
         instance = this;
     }

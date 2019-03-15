@@ -12,6 +12,10 @@ import android.view.ViewGroup;
 
 import com.yarolegovich.lovelydialog.LovelyChoiceDialog;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +24,9 @@ import cn.sddman.download.R;
 import cn.sddman.download.activity.PlayerActivity;
 import cn.sddman.download.activity.TorrentInfoActivity;
 import cn.sddman.download.adapter.DownloadingListAdapter;
+import cn.sddman.download.common.Const;
+import cn.sddman.download.common.MessageEvent;
+import cn.sddman.download.common.Msg;
 import cn.sddman.download.mvp.e.DownloadTaskEntity;
 import cn.sddman.download.mvp.p.DownloadIngPresenter;
 import cn.sddman.download.mvp.p.DownloadIngPresenterImp;
@@ -31,7 +38,7 @@ public class DownLoadIngFrm extends Fragment implements DownLoadIngView{
     private RecyclerView recyclerView;
     private DownloadIngPresenter downloadIngPresenter;
     private DownloadingListAdapter downloadingListAdapter;
-    private List<DownloadTaskEntity> list=null;
+    private List<DownloadTaskEntity> list=new ArrayList<>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.frm_download_ing, container, false);
@@ -46,15 +53,6 @@ public class DownLoadIngFrm extends Fragment implements DownLoadIngView{
     }
     private void initView(){
         recyclerView=getView().findViewById(R.id.recyclerview);
-
-    }
-
-    @Override
-    public void initTaskListView(List<DownloadTaskEntity> list) {
-        if(list!=null && list.size()>0)
-            this.list=list;
-        else
-            this.list=new ArrayList<>();
         LinearLayoutManager manager = new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(manager);
@@ -78,28 +76,35 @@ public class DownLoadIngFrm extends Fragment implements DownLoadIngView{
         if("TORRENT".equals(suffix)) {
             Intent intent = new Intent(getActivity(), TorrentInfoActivity.class);
             intent.putExtra("torrentPath", task.getLocalPath()+ File.separator+task.getmFileName());
+            intent.putExtra("isDown", true);
             startActivity(intent);
         }else if(FileTools.isVideoFile(task.getmFileName())){
+            String videoPath=task.getLocalPath()+File.separator+task.getmFileName();
             Intent intent = new Intent(getActivity(), PlayerActivity.class);
-            intent.putExtra("videoPath", task.getLocalPath()+File.separator+task.getmFileName());
+            intent.putExtra("videoPath", videoPath);
+            startActivity(intent);
+        }else if(!task.getFile() && task.getTaskType()==Const.BT_DOWNLOAD){
+            Intent intent = new Intent(getActivity(), TorrentInfoActivity.class);
+            intent.putExtra("torrentPath", task.getUrl());
+            intent.putExtra("isDown", false);
             startActivity(intent);
         }
     }
 
     @Override
     public void deleTask(final DownloadTaskEntity task) {
-            String[] items = new String[]{getContext().getString(R.string.dele_data_and_file)};
-            new LovelyChoiceDialog(getContext())
-                    .setTopColorRes(R.color.colorAccent)
-                    .setTitle(R.string.determine_dele)
-                    .setIcon(R.drawable.ic_error)
-                    .setItemsMultiChoice(items, new LovelyChoiceDialog.OnItemsSelectedListener<String>() {
-                        @Override
-                        public void onItemsSelected(List<Integer> positions, List<String> items) {
-                            Boolean deleFile=items.size()>0?true:false;
-                            downloadIngPresenter.deleTask(task,deleFile);
-                        }
-                    }).show();
+        String[] items = new String[]{getContext().getString(R.string.dele_data_and_file)};
+        new LovelyChoiceDialog(getContext())
+                .setTopColorRes(R.color.colorAccent)
+                .setTitle(R.string.determine_dele)
+                .setIcon(R.drawable.ic_error)
+                .setItemsMultiChoice(items, new LovelyChoiceDialog.OnItemsSelectedListener<String>() {
+                    @Override
+                    public void onItemsSelected(List<Integer> positions, List<String> items) {
+                        Boolean deleFile=items.size()>0?true:false;
+                        downloadIngPresenter.deleTask(task,deleFile);
+                    }
+                }).show();
     }
 
     @Override
@@ -114,13 +119,30 @@ public class DownLoadIngFrm extends Fragment implements DownLoadIngView{
         Util.alert(this.getActivity(),msg,msgType);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN,sticky=true)
+    public void onMessageEvent(MessageEvent event) {
+        Msg msg=event.getMessage();
+        if(msg.getType()== Const.MESSAGE_TYPE_RES_TASK){
+            DownloadTaskEntity task=(DownloadTaskEntity)msg.getObj();
+            downloadIngPresenter.startTask(task);
+            EventBus.getDefault().postSticky(new MessageEvent(new Msg(Const.MESSAGE_TYPE_SWITCH_TAB, 0)));
+        }else if(msg.getType()== Const.MESSAGE_TYPE_APP_UPDATA_PRESS){
+            List<DownloadTaskEntity> tasks=(List<DownloadTaskEntity>)msg.getObj();
+            refreshData(tasks);
+        }
+    }
     @Override
     public void onStart() {
+        if(!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this);
+        }
         super.onStart();
     }
 
     @Override
     public void onDestroy() {
+        if (EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().unregister(this);
         downloadIngPresenter.stopLoop();
         downloadIngPresenter.clearHandler();
         super.onDestroy();

@@ -41,4 +41,9 @@ public class AppSettingPresenterImp implements AppSettingPresenter {
     public void setMobileNet(String net) {
         appSettingModel.setMobileNet(net);
     }
+
+    @Override
+    public void setDownNotify(String notify) {
+        appSettingModel.setDownNotify(notify);
+    }
 }

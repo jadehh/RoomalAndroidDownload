@@ -5,7 +5,6 @@ import java.util.List;
 import cn.sddman.download.mvp.e.DownloadTaskEntity;
 
 public interface DownLoadIngView {
-    void initTaskListView(List<DownloadTaskEntity> list);
     void startTask(DownloadTaskEntity task);
     void sopTask(DownloadTaskEntity task);
     void openFile(DownloadTaskEntity task);

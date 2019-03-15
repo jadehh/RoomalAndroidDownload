@@ -28,11 +28,11 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 ext {
-    userOrg = 'libo'
-    groupId = 'cn.imlibo'
-    uploadName = 'FilePicker'
-    publishVersion = 'v0.0.5_alpha'
-    desc = 'Android文件选择器、图片选择器、MIMEType分类选择器'
-    website = 'https://github.com/imLibo/FilePicker'
+    userOrg = 'sddman'
+    groupId = 'cn.sddman'
+    uploadName = 'Dowload'
+    publishVersion = 'v1.0'
+    desc = '一个安卓下载工具'
+    website = 'https://github.com/roomanl/AndroidDownload'
     licences = ['MIT']
 }

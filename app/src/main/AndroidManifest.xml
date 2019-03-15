@@ -15,18 +15,23 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         android:name=".App">
-        <activity android:name=".activity.WelcomeActivity">
+        <meta-data android:name="BaiduMobAd_STAT_ID" android:value="88caa00c60" />
+        <meta-data android:name="BaiduMobAd_EXCEPTION_LOG" android:value="true" />
+
+        <activity android:name=".activity.WelcomeActivity"
+            android:icon="@drawable/logo">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -41,6 +46,11 @@
         <activity android:name=".activity.PlayerActivity"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.AppStartLoadTranslucent"></activity>
+        <activity android:name=".activity.MagnetSearchActivity"
+            android:windowSoftInputMode="adjustPan" ></activity>
+        <activity android:name=".activity.BrowseActivity"></activity>
+
+        <service android:name="cn.sddman.download.service.DownService"/>
     </application>
 
 </manifest>
