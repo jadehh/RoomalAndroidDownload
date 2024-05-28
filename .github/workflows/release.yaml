@@ -84,6 +84,8 @@ jobs:
         run: |
           cd androiddownload
           ls -l
+          ls app -l
+          ls app/build -l
           ls app/build/outputs -l
           ls app/build/outputs/apk -l
           ls app/build/outputs/apk/debug -l
