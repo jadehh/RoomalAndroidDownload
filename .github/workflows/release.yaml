@@ -78,6 +78,16 @@ jobs:
           echo "## ${{steps.get_current_time.outputs.current_time}} ${{ github.ref_name }}" >> ${{ github.workspace }}-CHANGELOG.txt
           echo "### Open Version Update" >> ${{ github.workspace }}-CHANGELOG.txt
           echo "* ${{steps.get_git_latest_message.outputs.git_latest}}" >> ${{ github.workspace }}-CHANGELOG.txt
+  
+      
+      - name: Show Apks
+        run: |
+          cd androiddownload
+          ls -l
+          ls app/build/outputs -l
+          ls app/build/outputs/apk -l
+          ls app/build/outputs/apk/debug -l
+
 
       - name: Deploy
         uses: softprops/action-gh-release@v1
