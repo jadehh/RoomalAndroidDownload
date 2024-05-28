@@ -44,7 +44,7 @@ jobs:
       - name: Edit gradle
         run: |
           cd code 
-          python build.py --version ${{ github.ref_name }}
+          python build.py --version ${{ github.ref_name }} --path androiddownload
 
 
       - name: Setup Gradle
