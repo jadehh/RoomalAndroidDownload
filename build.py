@@ -22,7 +22,7 @@ def edit_gradle_file(version,path):
     matches = re.findall('versionName "([^"]*)"', content)
     content = content.replace(matches[0],version)
 
-    matches = re.findall('versionCode  "([^"]*)"', content)
+    matches = re.findall('versionCode "([^"]*)"', content)
     content = content.replace(matches[0],''.join([char for char in version if char.isdigit()]))
 
     content = content.split("'proguard-rules.pro'")[0] + "'proguard-rules.pro'" + "\n\t\t\tsigningConfig signingConfigs.debug" +  content.split("'proguard-rules.pro'")[1].replace("\n\t\t\tsigningConfig signingConfigs.debug","")
@@ -34,4 +34,5 @@ if __name__ == '__main__':
     parser.add_argument('--version', type=str, default="v1.0.0")  ## 添加
     parser.add_argument('--path', type=str, default="androiddownload")  ## 添加
     args = parser.parse_args()
-    edit_gradle_file(args.version,args.path)
+    print(''.join([char for char in args.version if char.isdigit()]))
+    # edit_gradle_file(args.version,args.path)
